@@ -13,6 +13,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
@@ -25,6 +26,18 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.postgresql:postgresql")
+
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+	implementation("com.google.code.gson:gson:2.8.9")
 }
 
 tasks.withType<KotlinCompile> {
@@ -32,8 +45,13 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "11"
 	}
+	kotlinOptions {
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		jvmTarget = "11"
+	}
 }
 
 tasks.withType<Test> {
+	useJUnitPlatform()
 	useJUnitPlatform()
 }

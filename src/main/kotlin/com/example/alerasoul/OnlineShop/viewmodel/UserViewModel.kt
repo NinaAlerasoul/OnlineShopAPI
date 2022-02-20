@@ -14,8 +14,20 @@ data class UserViewModel(
     var address: String = "",
     var phone: String = "",
     var postalCode: String = "",
-    var customerId: Int = 0
+    var customerId: Int = 0,
+    var token: String = "",
 ) {
+    constructor(user: User) : this(
+        id = user.id,
+        username = user.username,
+        firstName = user.customer!!.firstName,
+        lastName = user.customer!!.lastName,
+        address = user.customer!!.address,
+        phone = user.customer!!.phone,
+        postalCode = user.customer!!.postalCode,
+        customerId = user.customer!!.id
+    )
+
     fun convertToUser(): User {
         return User(id, username, password, convertToCustomer())
     }

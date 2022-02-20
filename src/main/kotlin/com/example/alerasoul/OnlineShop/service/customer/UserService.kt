@@ -39,7 +39,10 @@ class UserService {
         return repository.save(data)
     }
 
-    fun update(data: User): User? {
+    fun update(data: User, currentUser: String): User? {
+        val user = getUserByUsername(currentUser)
+        if (user == null || data.id != user.id)
+            throw Exception("you don't have permission")
         if (data.customer!!.firstName.isEmpty())
             throw Exception("firstname is empty")
         if (data.customer!!.lastName.isEmpty())
@@ -74,7 +77,10 @@ class UserService {
         return repository.count()
     }
 
-    fun changePassword(data: User, repeatPass: String, oldPass: String): User {
+    fun changePassword(data: User, repeatPass: String, oldPass: String, currentUser: String): User {
+        val user = getUserByUsername(currentUser)
+        if (user == null || data.id != user.id)
+            throw Exception("you don't have permission")
         if (data.username.isEmpty())
             throw Exception("username is empty")
         if (oldPass.isEmpty())

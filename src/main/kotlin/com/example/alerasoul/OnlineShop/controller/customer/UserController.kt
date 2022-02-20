@@ -4,11 +4,14 @@ package com.example.alerasoul.OnlineShop.controller.customer
 import com.example.alerasoul.OnlineShop.model.customer.User
 import com.example.alerasoul.OnlineShop.service.customer.UserService
 import com.example.alerasoul.OnlineShop.util.ServiceResponse
+import com.example.alerasoul.OnlineShop.util.UserUtil.Companion.getCurrentUsername
 import com.example.alerasoul.OnlineShop.util.exception.NotFoundException
 import com.example.alerasoul.OnlineShop.viewmodel.UserViewModel
+import com.example.alerasoul.OnlineShop.config.JwtTokenUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("api/user")
@@ -17,10 +20,14 @@ class UserController {
     @Autowired
     lateinit var service: UserService
 
-    @GetMapping("/{id}")
-    fun getById(@PathVariable id: Int): ServiceResponse<User> {
+    @Autowired
+    lateinit var jwtUtil: JwtTokenUtils
+
+    @GetMapping()
+    fun getById(request: HttpServletRequest): ServiceResponse<User> {
         return try {
-            val data = service.getById(id) ?: throw NotFoundException("data not found")
+            val currentUser = getCurrentUsername(request, jwtUtil)
+            val data = service.getUserByUsername(currentUser) ?: throw NotFoundException("data not found")
             ServiceResponse(data = listOf(data), status = HttpStatus.OK)
         } catch (e: NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
@@ -42,10 +49,13 @@ class UserController {
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody user: UserViewModel): ServiceResponse<User> {
+    fun login(@RequestBody user: UserViewModel): ServiceResponse<UserViewModel> {
         return try {
-            val data = service.getByUsernameAndPass(user.username, user.password)!!
-            ServiceResponse(listOf(data), HttpStatus.OK)
+            val data =
+                service.getByUsernameAndPass(user.username, user.password) ?: throw NotFoundException("data not found")
+            val vm = UserViewModel(data)
+            vm.token = jwtUtil.generateToken(vm)!!
+            ServiceResponse(listOf(vm), HttpStatus.OK)
         } catch (e: NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         } catch (e: Exception) {
@@ -54,9 +64,10 @@ class UserController {
     }
 
     @PutMapping("/update")
-    fun editUser(@RequestBody user: UserViewModel): ServiceResponse<User>? {
+    fun editUser(@RequestBody user: UserViewModel, request: HttpServletRequest): ServiceResponse<User>? {
         return try {
-            val data = service.update(user.convertToUser()) ?: throw NotFoundException("data not found")
+            val currentUser = getCurrentUsername(request, jwtUtil)
+            val data = service.update(user.convertToUser(), currentUser) ?: throw NotFoundException("data not found")
             ServiceResponse(listOf(data), HttpStatus.OK)
         } catch (e: NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
@@ -66,10 +77,10 @@ class UserController {
     }
 
     @PutMapping("/changePass")
-    fun changePassword(@RequestBody user: UserViewModel): ServiceResponse<User> {
+    fun changePassword(@RequestBody user: UserViewModel, request: HttpServletRequest): ServiceResponse<User> {
         return try {
-
-            val data = service.changePassword(user.convertToUser(), user.repeatPass, user.oldPass)
+            val currentUser = getCurrentUsername(request, jwtUtil)
+            val data = service.changePassword(user.convertToUser(), user.repeatPass, user.oldPass, currentUser)
             ServiceResponse(listOf(data), HttpStatus.OK)
         } catch (e: NotFoundException) {
             ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
