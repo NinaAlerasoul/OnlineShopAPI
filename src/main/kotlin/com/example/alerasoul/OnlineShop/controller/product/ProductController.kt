@@ -47,10 +47,28 @@ class ProductController {
             ServiceResponse(status = HttpStatus.INTERNAL_SERVER_ERROR, message = e.message!!)
         }
     }
+
     @GetMapping("/popular")
     fun getPopularProducts(): ServiceResponse<Product> {
         return try {
             ServiceResponse(data = service.getTopPopular(), status = HttpStatus.OK)
+        } catch (e: Exception) {
+            ServiceResponse(status = HttpStatus.INTERNAL_SERVER_ERROR, message = e.message!!)
+        }
+    }
+
+    @GetMapping("/cat/{categoryId}")
+    fun getAllByCategoryId(
+        @PathVariable categoryId: Int,
+        @RequestParam pageIndex: Int,
+        @RequestParam pageSize: Int,
+    ): ServiceResponse<Product> {
+        return try {
+            val data =
+                service.getAllByCategoryId(categoryId, pageIndex, pageSize) ?: throw NotFoundException("data not found")
+            ServiceResponse(data = data, status = HttpStatus.OK)
+        } catch (e: NotFoundException) {
+            ServiceResponse(status = HttpStatus.NOT_FOUND, message = e.message!!)
         } catch (e: Exception) {
             ServiceResponse(status = HttpStatus.INTERNAL_SERVER_ERROR, message = e.message!!)
         }

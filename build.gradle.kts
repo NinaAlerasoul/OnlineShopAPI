@@ -48,6 +48,7 @@ dependencies {
 
 	implementation("com.google.guava:guava:29.0-jre")
 
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.5.5")
 }
 
 tasks.withType<KotlinCompile> {

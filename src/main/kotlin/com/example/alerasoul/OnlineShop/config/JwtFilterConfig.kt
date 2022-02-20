@@ -1,5 +1,5 @@
 package com.example.alerasoul.OnlineShop.config
-import com.example.ninaKotlinShopping.NinaKotlinShopping.config.filter.JwtRequestFilter
+import com.example.alerasoul.OnlineShop.config.filter.JwtRequestFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Configurable
 import org.springframework.boot.web.servlet.FilterRegistrationBean

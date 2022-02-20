@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify</title>
+</head>
+<body>
+<h1>OnlineShop verify page</h1>
+<hr/>
+//https://bpm.shaparak.ir/pgwchannel/payment.mellat?RefId=CD54D6A88DA49AF9&CartItem=%C3%99%C2%81%C3%98%C2%B1%C3%99%C2%88%C3%98%C2%B4%C3%9A%C2%AF%C3%98%C2%A7%C3%99%C2%87%3A+%C3%99%C2%81%C3%98%C2%B1%C3%99%C2%88%C3%98%C2%B4%C3%9A%C2%AF%C3%98%C2%A7%C3%99%C2%87+%C3%98%C2%A2%C3%99%C2%86%C3%99%C2%84%C3%98%C2%A7%C3%9B%C2%8C%C3%99%C2%86
+<div>
+    <h2 th:text="'Code : '+${code}"></h2>
+    <h2 th:text="'Number : '+${invoiceNumber}"></h2>
+    <h2 th:text="'Reference : '+${referenceId}"></h2>
+    <h2 th:text="'Status : '+${status}"></h2>
+    <br/>
+    <h1>
+        <a th:href="'app://onlineshop.ir/'+${invoiceNumber}">برای بازگشت به اپلیکیشن کلیک کنید</a>
+    </h1>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.example.ninaKotlinShopping.NinaKotlinShopping.config.filter
+package com.example.alerasoul.OnlineShop.config.filter
 
 import com.example.alerasoul.OnlineShop.config.JwtTokenUtils
 import com.example.alerasoul.OnlineShop.service.customer.UserService

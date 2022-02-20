@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @EnableWebMvc
 @SpringBootApplication
-class NinaKotlinShoppingApplication
+class OnlineShopApplication
 
 fun main(args: Array<String>) {
-	runApplication<NinaKotlinShoppingApplication>(*args)
+	runApplication<OnlineShopApplication>(*args)
 }
