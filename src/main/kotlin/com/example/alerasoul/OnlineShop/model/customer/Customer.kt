@@ -3,7 +3,6 @@ package com.example.alerasoul.OnlineShop.model.customer
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
-
 @Entity
 data class Customer(
     @Id
