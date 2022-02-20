@@ -19,7 +19,6 @@ class UserService {
 
     fun getById(id: Int): User? {
         val data = repository.findById(id)
-        if (data.isEmpty) return null
         return data.get()
     }
 

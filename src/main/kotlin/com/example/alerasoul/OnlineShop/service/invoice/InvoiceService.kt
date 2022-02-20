@@ -3,6 +3,7 @@ package com.example.alerasoul.OnlineShop.service.invoice
 import com.example.alerasoul.OnlineShop.model.enum.InvoiceStatus
 import com.example.alerasoul.OnlineShop.model.invoice.Invoice
 import com.example.alerasoul.OnlineShop.repository.invoice.InvoiceRepository
+import com.example.alerasoul.OnlineShop.service.customer.CustomerService
 import com.example.alerasoul.OnlineShop.service.customer.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -21,6 +22,10 @@ class InvoiceService {
 
     @Autowired
     lateinit var userService: UserService
+
+    @Autowired
+    lateinit var customerService: CustomerService
+
 
 
     fun getAllByUserId(userId: Int, pageIndex: Int, pageSize: Int, currentUser: String): List<Invoice>? {
@@ -60,13 +65,6 @@ class InvoiceService {
             invoiceItemService.addItem(it)
         }
         return repository.save(data)
-    }
-
-    fun update(data: Invoice, currentUser: String): Invoice? {
-        val oldData = getById(data.id, currentUser) ?: return null
-        oldData.addDate = data.addDate
-        oldData.paymentDate = data.paymentDate
-        return repository.save(oldData)
     }
 
     fun getTotalCount(): Long {
