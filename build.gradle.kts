@@ -38,6 +38,16 @@ dependencies {
 
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("com.google.code.gson:gson:2.8.9")
+
+
+	implementation("io.springfox:springfox-swagger2:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation("com.google.guava:guava:29.0-jre")
+
 }
 
 tasks.withType<KotlinCompile> {

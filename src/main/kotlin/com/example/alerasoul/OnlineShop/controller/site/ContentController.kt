@@ -3,7 +3,7 @@ package com.example.alerasoul.OnlineShop.controller.site
 import com.example.alerasoul.OnlineShop.model.site.Content
 import com.example.alerasoul.OnlineShop.util.ServiceResponse
 import com.example.alerasoul.OnlineShop.util.exception.NotFoundException
-import com.example.ninaKotlinShopping.NinaKotlinShopping.service.site.ContentService
+import com.example.alerasoul.OnlineShop.service.site.ContentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("api/content")
+@RequestMapping("api2/content")
 class ContentController {
     @Autowired
     lateinit var service: ContentService

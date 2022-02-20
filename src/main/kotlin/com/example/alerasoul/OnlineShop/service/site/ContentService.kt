@@ -1,4 +1,4 @@
-package com.example.ninaKotlinShopping.NinaKotlinShopping.service.site
+package com.example.alerasoul.OnlineShop.service.site
 
 import com.example.alerasoul.OnlineShop.model.site.Content
 import com.example.alerasoul.OnlineShop.repository.site.ContentRepository

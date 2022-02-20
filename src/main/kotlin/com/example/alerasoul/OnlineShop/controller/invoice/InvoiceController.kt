@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
-@RequestMapping("api/invoice")
+@RequestMapping("api2/invoice")
 class InvoiceController {
 
     @Autowired

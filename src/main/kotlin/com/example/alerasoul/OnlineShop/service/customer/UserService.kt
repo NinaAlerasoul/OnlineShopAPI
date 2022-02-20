@@ -2,6 +2,8 @@ package com.example.alerasoul.OnlineShop.service.customer
 
 import com.example.alerasoul.OnlineShop.model.customer.User
 import com.example.alerasoul.OnlineShop.repository.customer.UserRepository
+import com.example.alerasoul.OnlineShop.util.SecurityUtil
+import com.example.alerasoul.OnlineShop.util.SecurityUtil.Companion.encryptSHA256
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -22,8 +24,9 @@ class UserService {
     }
 
     fun getUserByUsername(username: String): User? {
-        val data = repository.findUserByUsername(username)
-        return data
+        if (username.isEmpty())
+            throw Exception("username is empty")
+        return repository.findUserByUsername(username)
     }
 
     fun insert(data: User): User {
@@ -35,12 +38,19 @@ class UserService {
             throw Exception("username is empty")
         if (data.password.isEmpty())
             throw Exception("password is empty")
+        val duplicate = getUserByUsername(data.username)
+        if (duplicate != null)
+            throw Exception("this username is already exists")
+        val hashPass = SecurityUtil.encryptSHA256(data.password)
+        data.password = hashPass
         customerService.insert(data.customer!!)
-        return repository.save(data)
+        val savedData = repository.save(data)
+        savedData.password = ""
+        return savedData
     }
 
     fun update(data: User, currentUser: String): User? {
-        val user = getUserByUsername(currentUser)
+        val user = repository.findUserByUsername(currentUser)
         if (user == null || data.id != user.id)
             throw Exception("you don't have permission")
         if (data.customer!!.firstName.isEmpty())
@@ -70,7 +80,8 @@ class UserService {
             throw Exception("username is empty")
         if (password.isEmpty())
             throw Exception("password is empty")
-        return repository.findFirstByUsernameAndPassword(userName, password)
+        val hashPass = SecurityUtil.encryptSHA256(password)
+        return repository.findFirstByUsernameAndPassword(userName, hashPass)
     }
 
     fun getTotalCount(): Long {
@@ -78,7 +89,7 @@ class UserService {
     }
 
     fun changePassword(data: User, repeatPass: String, oldPass: String, currentUser: String): User {
-        val user = getUserByUsername(currentUser)
+        val user = repository.findUserByUsername(currentUser)
         if (user == null || data.id != user.id)
             throw Exception("you don't have permission")
         if (data.username.isEmpty())
@@ -89,11 +100,11 @@ class UserService {
             throw Exception("enter password and repeat")
         if (data.password != repeatPass)
             throw Exception("password and repeat are not match ")
-        val oldData = getUserByUsername(data.username) ?: throw Exception("data not found")
-        if (oldPass != oldData.password)
+        if (SecurityUtil.encryptSHA256(oldPass) != user.password)
             throw Exception("current pass is false")
-        oldData.password = data.password
-        val savedData = repository.save(oldData)
+        val hashPass = SecurityUtil.encryptSHA256(data.password)
+        user.password = hashPass
+        val savedData = repository.save(user)
         savedData.password = ""
         return savedData
     }
