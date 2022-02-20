@@ -1,11 +1,12 @@
 package com.example.alerasoul.OnlineShop
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class OnlineShopApplication
+class NinaKotlinShoppingApplication
 
 fun main(args: Array<String>) {
-	runApplication<OnlineShopApplication>(*args)
+	runApplication<NinaKotlinShoppingApplication>(*args)
 }
